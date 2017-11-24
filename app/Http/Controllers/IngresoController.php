@@ -40,7 +40,7 @@ class IngresoController extends Controller
     		->groupBy('i.idingreso','i.fecha_hora','p.nombre','i.tipo_comprobante','i.serie_comprobante','i.num_comprobante','i.impuesto','i.estado')
     		->paginate(7);
 
-    		return view('compras.ingreso.index',["ingresos"=>$ingresos,"buscaTexto",=>$query]);
+    		return view('compras.ingreso.index',["ingresos"=>$ingresos,"buscaTexto"=>$query]);
     	}
 
     }
@@ -48,9 +48,8 @@ class IngresoController extends Controller
     public function create(){
 
     	$personas=DB::table('persona')->where('tipo_persona','=','Proveedor')->get();
-
     	$articulos=DB::table('articulo as art')
-    		->select(DB::raw('CONCAT(art.codigo," ",art.nombre ) as Articulo','art.idarticulo')
+    		->select(DB::raw('CONCAT(art.codigo, " ",art.nombre)  AS articulo'),'art.idarticulo')
     		->where('art.estado','=','Activo')
     		->get();
 
@@ -59,7 +58,7 @@ class IngresoController extends Controller
 
     }
 
-    public function store (IngresoFormRequest $request){
+    public function store(IngresoFormRequest $request){
 
     	try{
     		DB::beginTransaction();
@@ -126,9 +125,10 @@ class IngresoController extends Controller
 
     public function destroy($id){
 
-    	$ingreso=Ingreso::findOrFail($id)
+    	$ingreso=Ingreso::findOrFail($id);
     	$ingreso->estado='C';
-    	$ingreso
+    	$ingreso->update();
+        return Redirect::to('compras/ingreso');
     }
 
 
