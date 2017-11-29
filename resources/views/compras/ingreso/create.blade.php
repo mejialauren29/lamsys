@@ -109,7 +109,7 @@
 								<th></th>
 								<th></th>
 								<th></th>
-								<th><h4 id="total">S/.0.00</h4></th>
+								<th><h4 id="total">C$/.0.00</h4></th>
 							</tfoot>
 
 							<tbody>
@@ -123,18 +123,14 @@
 
 			<div class="col-lg-6 col-sm-6 col-md-6 col-xs-12" id="guardar">
 				<div class="form-group">
-					<input  name"_token" value="{{ csrf_token() }}" type="hidden"></input>
+					<input  name"_token" value="{{ csrf_token() }}" type="hidden">
 					<button class="btn btn-danger" type="reset">Cancelar</button>
 					<button class="btn btn-primary" type="submit">Guardar</button>
 				</div>
 			</div>
 	</div>
 	
-			
-
-			
-
-		{!!Form::close()!!}
+{!!Form::close()!!}
 		
 @push('scripts')
 <script>
@@ -176,12 +172,12 @@
 		precio_compra=$("#pprecio_compra").val();
 		precio_venta=$("#pprecio_venta").val();
 
-		if(idarticulo!="" && cantidad>0 && precio_compra!="" && precio_venta!=""){
+		if(idarticulo!="" && cantidad!="" &&cantidad>0 && precio_compra!="" && precio_venta!=""){
 
 			subtotal[contador]=(cantidad*precio_compra);
 			total=total+subtotal[contador];
 
-			var fila='<tr class="selected" id="fila'+contador'"><td><button class="btn btn-danger" type="button" onclick="eliminar('+contador+');">X</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_compra[]" value="'+precio_compra+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[contador]+'</td></tr>';
+			var fila='<tr class="selected" id="fila'+contador+'"><td><button class="btn btn-danger" type="button" onclick="eliminar('+contador+');">X</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_compra[]" value="'+precio_compra+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[contador]+'</td></tr>';
 			contador++;
 			limpiar();
 			$("#total").html("S/. "+ total);
@@ -192,7 +188,7 @@
 		}
 		else{
 
-			alert("Error al ingresar el detalle del articulo")
+			alert("Error al ingresar el detalle del articulo");
 		}
 
 	}

@@ -15,11 +15,13 @@ class DetalleIngreso extends Model
     protected $fillable=[
     'idingreso',
     'idarticulo',
-    'cantidad'
+    'cantidad',
     'precio_compra',
     'precio_venta'
     
     ];
 
-    protected $guarded=[
+  protected $guarded=[
+
+    ];
 }
