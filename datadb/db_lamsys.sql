@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-11-2017 a las 20:26:00
+-- Tiempo de generación: 30-11-2017 a las 05:35:06
 -- Versión del servidor: 10.1.16-MariaDB
 -- Versión de PHP: 5.6.24
 
@@ -43,7 +43,8 @@ CREATE TABLE `articulo` (
 
 INSERT INTO `articulo` (`idarticulo`, `idcategoria`, `codigo`, `nombre`, `stock`, `descripcion`, `imagen`, `estado`) VALUES
 (1, 4, '001', 'Mapa de recorrido', 12, 'test', 'etapa1.PNG', 'Inactivo'),
-(2, 1, '0001', 'Mouse', 10, 'Mouse para computadoras', NULL, 'Activo');
+(2, 1, '0001', 'Mouse', 18, 'Mouse para computadoras', NULL, 'Activo'),
+(3, 6, '6154564', 'escrituta', 10, 'sdgsdsdgsdg', 'joker_in_the_dark_knight-normal.jpg', 'Inactivo');
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,7 @@ INSERT INTO `categoria` (`idcategoria`, `nombre`, `descripcion`, `condicion`) VA
 (14, 'Lacteos', 'Productos elaborados a base de leche de vaca', 1),
 (15, 'Frutas22', 'Frutas organicas', 1),
 (16, 'Tecnologia', 'Aparatos tecnologicos', 0),
-(17, 'test', 'test', 1);
+(17, 'test', 'test33', 1);
 
 -- --------------------------------------------------------
 
@@ -90,6 +91,27 @@ CREATE TABLE `detalle_ingreso` (
   `precio_compra` decimal(11,2) NOT NULL,
   `precio_venta` decimal(11,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `detalle_ingreso`
+--
+
+INSERT INTO `detalle_ingreso` (`iddetalle_ingreso`, `idingreso`, `idarticulo`, `cantidad`, `precio_compra`, `precio_venta`) VALUES
+(1, 1, 2, 5, '100.00', '150.00'),
+(2, 1, 2, 100, '100.00', '150.00'),
+(3, 2, 2, 5, '10.00', '20.00'),
+(4, 3, 2, 8, '150.00', '200.00');
+
+--
+-- Disparadores `detalle_ingreso`
+--
+DELIMITER $$
+CREATE TRIGGER `tr_updateStockIngreso` AFTER INSERT ON `detalle_ingreso` FOR EACH ROW BEGIN
+	UPDATE articulo set stock=stock + NEW.cantidad
+    WHERE articulo.idarticulo=NEW.idarticulo;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -122,6 +144,15 @@ CREATE TABLE `ingreso` (
   `impuesto` decimal(10,0) NOT NULL,
   `estado` varchar(45) COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `ingreso`
+--
+
+INSERT INTO `ingreso` (`idingreso`, `idproveedor`, `tipo_comprobante`, `serie_comprobante`, `num_comprobante`, `fecha_hora`, `impuesto`, `estado`) VALUES
+(1, 3, 'Boleta', '123', '321', '2017-11-29 20:16:08', '15', 'A'),
+(2, 3, 'Boleta', '45454', '45454', '2017-11-29 20:24:16', '15', 'C'),
+(3, 3, 'Boleta', '4545', '5454', '2017-11-29 21:50:18', '15', 'A');
 
 -- --------------------------------------------------------
 
@@ -228,7 +259,7 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `articulo`
 --
 ALTER TABLE `articulo`
-  MODIFY `idarticulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idarticulo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
@@ -238,7 +269,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `detalle_ingreso`
 --
 ALTER TABLE `detalle_ingreso`
-  MODIFY `iddetalle_ingreso` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `iddetalle_ingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `detalle_venta`
 --
@@ -248,7 +279,7 @@ ALTER TABLE `detalle_venta`
 -- AUTO_INCREMENT de la tabla `ingreso`
 --
 ALTER TABLE `ingreso`
-  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idingreso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `persona`
 --
