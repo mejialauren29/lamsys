@@ -180,7 +180,7 @@
 			var fila='<tr class="selected" id="fila'+contador+'"><td><button class="btn btn-danger" type="button" onclick="eliminar('+contador+');">X</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_compra[]" value="'+precio_compra+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[contador]+'</td></tr>';
 			contador++;
 			limpiar();
-			$("#total").html("S/. "+ total);
+			$("#total").html("C$/. "+ total);
 			evaluar();
 			$("#detalles").append(fila);
 
