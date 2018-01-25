@@ -167,6 +167,7 @@
 		$("#pcantidad").val("");
 		$("#pdescuento").val("");
 		$("#pprecio_venta").val("");
+		$("#pstock").val("");
 	}	
 
 	function evaluar(){
@@ -185,26 +186,40 @@
 		idarticulo=datosArticulos[0];
 		articulo=$("#pidarticulo option:selected").text();
 		cantidad=$("#pcantidad").val();
-		precio_compra=$("#pprecio_compra").val();
+
+		descuento=$("#pdescuento").val();	 
 		precio_venta=$("#pprecio_venta").val();
+		stock=$("#pstock").val();
+		
 
-		if(idarticulo!="" && cantidad!="" &&cantidad>0 && precio_compra!="" && precio_venta!=""){
+		if(idarticulo!="" && cantidad!="" && cantidad>0 && descuento!="" && precio_venta!="")
+		{
+			
+			if (stock>=cantidad)
+			{
+					
+				subtotal[contador]=(cantidad*precio_venta-descuento);
+				total=total+subtotal[contador];
 
-			subtotal[contador]=(cantidad*precio_compra);
-			total=total+subtotal[contador];
+				var fila='<tr class="selected" id="fila'+contador+'"><td><button class="btn btn-danger" type="button" onclick="eliminar('+contador+');">X</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td><input type="number" name="descuento[]" value="'+descuento+'"></td><td>'+subtotal[contador]+'</td></tr>';
+				contador++;
+				limpiar();
+				$("#total").html("C$/. " + total);
+				$("#total_venta").val(total);				
+				evaluar();
+				$("#detalles").append(fila);
 
-			var fila='<tr class="selected" id="fila'+contador+'"><td><button class="btn btn-danger" type="button" onclick="eliminar('+contador+');">X</button></td><td><input type="hidden" name="idarticulo[]" value="'+idarticulo+'">'+articulo+'</td><td><input type="number" name="cantidad[]" value="'+cantidad+'"></td><td><input type="number" name="precio_compra[]" value="'+precio_compra+'"></td><td><input type="number" name="precio_venta[]" value="'+precio_venta+'"></td><td>'+subtotal[contador]+'</td></tr>';
-			contador++;
-			limpiar();
-			$("#total").html("C$/. "+ total);
-			evaluar();
-			$("#detalles").append(fila);
-
-
+			}
+			else
+				{	
+					alert('La cantidad a vender supera el stock disponible');
+					
+				}
+			
 		}
-		else{
-
-			alert("Error al ingresar el detalle del articulo");
+		else
+		{
+			alert("Error al ingresar el detalle de la venta");
 		}
 
 	}
@@ -212,6 +227,7 @@
 	function eliminar(index){
 		total=total-subtotal[index];
 		$("#total").html("S/. "+total);
+		$("total_venta").val(total);
 		$("#fila" + index).remove();
 		evaluar();
 	}
